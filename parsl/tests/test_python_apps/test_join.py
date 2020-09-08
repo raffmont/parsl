@@ -1,4 +1,3 @@
-import pytest
 import time
 
 from parsl import join_app, python_app
