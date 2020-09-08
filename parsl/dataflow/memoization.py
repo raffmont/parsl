@@ -3,6 +3,7 @@ from functools import singledispatch
 import logging
 from parsl.serialize import serialize
 import types
+from concurrent.futures import Future
 
 logger = logging.getLogger(__name__)
 
@@ -205,6 +206,7 @@ class Memoizer(object):
 
         task['hashsum'] = hashsum
 
+        assert isinstance(result, Future) or result is None
         return result
 
     def hash_lookup(self, hashsum):
@@ -232,6 +234,8 @@ class Memoizer(object):
         A warning is issued when a hash collision occurs during the update.
         This is not likely.
         """
+        # TODO: could use typeguard
+        assert isinstance(r, Future)
         if not self.memoize or not task['memoize'] or 'hashsum' not in task:
             return
 
