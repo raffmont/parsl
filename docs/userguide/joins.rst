@@ -20,7 +20,7 @@ into "patches", and then all patches assembled into a "mosaic".
 The list of which sensors must be assembled into which "patches" is not known ahead
 of time and is expensive to compute.
 
-There are many patches which must all be processed in this way.
+There are many patches that must all be processed in this way.
 
 For each patch:
 1. Generate list of sensors for this patch, in a single parsl app.
