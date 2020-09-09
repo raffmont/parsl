@@ -141,7 +141,7 @@ in previous examples, but there is still blocking there.
 
 This impedes compositionality: this code could not be placed into a function and (for example) run
 inside another for loop that loops over multiple datasets: the function would block each time waiting
-for sensor list generation, rather than processing each data set's sensor list generations
+for sensor list generation, rather than processing each dataset's sensor list generations
 concurrently.
 
 Anything that blocks the execution thread on future completion (for example, `.result()`
