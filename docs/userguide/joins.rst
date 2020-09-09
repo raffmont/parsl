@@ -11,7 +11,7 @@ launching `@python_app`.
 Motivating example
 ------------------
 
-Here is a motivating example which shows ways in which launching apps from inside a
+Here is a motivating example that shows ways in which launching apps from inside a
 `@python_app` is insufficient.
 
 Consider a workflow where there are "sensors" which must be processed and assembled
