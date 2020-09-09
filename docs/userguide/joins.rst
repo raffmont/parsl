@@ -188,7 +188,7 @@ This example uses a helper app called `combine` which, given a list of input fut
 completes when all of those futures complete, without any further processing. This constructs a
 barrier future, depending on an arbitrary list of other futures.
 
-This allows more naunced dependencies to be expressed which can help with:
+This allows more naunced dependencies to be expressed that can help with:
 * increased concurrency - helping with strong scaling
 * more focused error propagation - allowing more of an ultimately failing workflow to complete
 * more useful monitoring information
