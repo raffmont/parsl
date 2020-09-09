@@ -17,7 +17,7 @@ Here is a motivating example which shows ways in which launching apps from insid
 Consider a workflow where there are "sensors" which must be processed and assembled
 into "patches", and then all patches assembled into a "mosaic".
 
-The list of which sensors must be assembled into which "patches" is not know ahead
+The list of which sensors must be assembled into which "patches" is not known ahead
 of time and is expensive to compute.
 
 There are many patches which must all be processed in this way.
@@ -197,4 +197,3 @@ Terminology
 -----------
 
 The term `join` comes from use of monads in functional programming, especially Haskell.
-
