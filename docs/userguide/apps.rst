@@ -10,6 +10,8 @@ A Parsl app is defined by annotating a Python function with a decorator:
 the ``@python_app`` decorator for a **Python app**, and the ``@bash_app`` decorator for a **Bash app**. 
 Python apps encapsulate pure Python code, while Bash apps wrap calls to external applications and scripts.
 
+A more complicated app decorator, `join_app`, is described in :ref:`join-apps`.
+
 Python Apps
 -----------
 

@@ -1,18 +1,67 @@
+.. _join-apps:
+
 Join Apps
 =========
 
 Join apps allow a workflow to asynchronously launch other apps and incorporate
 them into the task graph. They can be specified using the `join_app` decorator.
 
-Although apps can be launched from within a `python_app` in any `ThreadPoolExecutor`,
-the ``Future`` objects for those launched apps cannot easily be used outside of the
-launching `python_app`.
+Here is an example implementing the Fibonacci sequence recursively:
 
-Motivating example
-------------------
+.. code-block:: python
+
+
+  @join_app
+  def fibonacci(n):
+      if n == 0:
+          return sum()
+      elif n == 1:
+          return sum(1)
+      else:
+          return sum(fibonacci(n - 1), fibonacci(n - 2))
+
+
+  @python_app
+  def sum(*args):
+      accumulator = 0
+      for v in args:
+          accumulator += v
+      return accumulator
+
+which can be used like this:
+
+.. code-block:: pycon
+
+  >>> fut = fibonacci(10)
+  >>> fut.result()
+  55
+
+The helper `python_app` ``sum`` returns the sum of all of its arguments, or
+0 if there are no arguments.
+
+The key feature of a `join_app` is that the python code returns a ``Future``
+rather than a value. An invocation of a `join_app` will complete when that
+returned ``Future`` completes, rather than as soon as the join_app's Python
+code completes.
+
+This means that tasks can be launched inside an app and used in the task
+graph [phrasing? used as dependencies?].
+
+In the above example ``fibonacci`` `join_app`, the particular set of tasks to
+launch is not decided until the app starts execution: an app future from
+invoking ``sum`` is always returned, but sometimes with a complex task graph
+as dependencies formed by recursively calling ``fibonacci`` again.
+
+Launching apps in this way can lead to a cleaner, more compositional style
+when writing parsl workflows. There are more specific details on this in 
+the motivating example section below.
+
+
+A more complicated motivating example
+-------------------------------------
 
 Here is a motivating example that shows ways in which launching apps from inside a
-`python_app` is insufficient.
+`python_app` is insufficient, and which led to the development of join_apps.
 
 Consider a workflow where there are "sensors" which must be processed and assembled
 into "patches", and then all patches assembled into a "mosaic".
