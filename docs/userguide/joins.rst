@@ -52,9 +52,12 @@ launch is not decided until the app starts execution: an app future from
 invoking ``sum`` is always returned, but sometimes with a complex task graph
 as dependencies formed by recursively calling ``fibonacci`` again.
 
-Launching apps in this way can lead to a cleaner, more compositional style
-when writing parsl workflows. There are more specific details on this in 
-the motivating example section below.
+Launching apps in this way can give several benefits:
+
+- more compositional style when writing workflows
+- increased concurrency, helping with strong scaling
+- more focused error propagation - allowing more progress to be made in an ultimately-failing workflow
+- more focused monitoring information
 
 
 A more complicated motivating example
@@ -228,19 +231,9 @@ in the user workflow should block waiting for app completion.
   def combine(*args):
     pass # do nothing, but only after all args are complete
 
-A `join_app` looks quite like a `python_app`, but should return a future, rather than a value.
-After the python code has run, the app invocation will not complete until that future has
-completed, and the return value of the `join_app` will be the return value (or exception)
-from the returned future.
-
 This example uses a helper app called ``combine`` which, given a list of input futures,
 completes when all of those futures complete, without any further processing. This constructs a
 barrier future, depending on an arbitrary list of other futures.
-
-This allows more naunced dependencies to be expressed that can help with:
-* increased concurrency - helping with strong scaling
-* more focused error propagation - allowing more of an ultimately failing workflow to complete
-* more useful monitoring information
 
 Terminology
 -----------
