@@ -3,8 +3,12 @@
 Join Apps
 =========
 
-Join apps allow a workflow to asynchronously launch other apps and incorporate
-them into the task graph. They can be specified using the `join_app` decorator.
+Join apps return a Future rather than a plain value, and complete when that
+Future completes. They are specified using the `join_app` decorator.
+
+This allows a workflow to asynchronously launch other apps and incorporate
+them into the task graph.
+
 
 Here is an example implementing the Fibonacci sequence recursively:
 
@@ -39,18 +43,12 @@ which can be used like this:
 The helper `python_app` ``sum`` returns the sum of all of its arguments, or
 0 if there are no arguments.
 
-The key feature of a `join_app` is that the python code returns a ``Future``
-rather than a value. An invocation of a `join_app` will complete when that
-returned ``Future`` completes, rather than as soon as the join_app's Python
-code completes.
-
-This means that tasks can be launched inside an app and used in the task
-graph [phrasing? used as dependencies?].
-
 In the above example ``fibonacci`` `join_app`, the particular set of tasks to
 launch is not decided until the app starts execution: an app future from
 invoking ``sum`` is always returned, but sometimes with a complex task graph
-as dependencies formed by recursively calling ``fibonacci`` again.
+as dependencies formed by recursively calling ``fibonacci`` again. This
+behaviour is controlled by the parameter ``n`` which in general isn't known
+until the app starts executing.
 
 Launching apps in this way can give several benefits:
 
@@ -63,8 +61,9 @@ Launching apps in this way can give several benefits:
 A more complicated motivating example
 -------------------------------------
 
-Here is a motivating example that shows ways in which launching apps from inside a
-`python_app` is insufficient, and which led to the development of join_apps.
+Here is a more complicated motivating example that shows ways in which
+launching apps from inside a `python_app` is insufficient, and which led to
+the development of join_apps.
 
 Consider a workflow where there are "sensors" which must be processed and assembled
 into "patches", and then all patches assembled into a "mosaic".
