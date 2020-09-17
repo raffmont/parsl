@@ -199,8 +199,8 @@ Anything that blocks the execution thread on future completion (for example, ``.
 or ``.as_completed()``) is the enemy.
 
 
-`join_app` syntax
-------------------
+Attempt 4 - `join_app` syntax
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is an attempt to move some of the cases where blocking and ad-hoc task scheduling happens in
 the workflow into parsl dependency handling. The only blocking should happen at the very end of the
