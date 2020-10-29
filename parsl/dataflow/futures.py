@@ -70,6 +70,10 @@ class AppFuture(Future):
         self.task_def = task_def
 
     @property
+    def workflow_schema(self):
+        return self.result()['workflow_schema']
+
+    @property
     def stdout(self):
         return self.task_def['kwargs'].get('stdout')
 
