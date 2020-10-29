@@ -753,7 +753,8 @@ class DataFlowKernel(object):
                     'time_returned': None,
                     'try_time_launched': None,
                     'try_time_returned': None,
-                    'resource_specification': resource_specification}
+                    'resource_specification': resource_specification,
+                    'workflow_schema': None}
 
         app_fu = AppFuture(task_def)
 
