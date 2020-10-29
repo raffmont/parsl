@@ -8,6 +8,7 @@ from inspect import getsource
 from hashlib import md5
 from inspect import signature
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -135,6 +136,43 @@ def bash_app(function=None, data_flow_kernel=None, cache=False, executors='all',
     def decorator(func):
         def wrapper(f):
             return BashApp(f,
+                           data_flow_kernel=data_flow_kernel,
+                           cache=cache,
+                           executors=executors,
+                           ignore_for_cache=ignore_for_cache)
+        return wrapper(func)
+    if function is not None:
+        return decorator(function)
+    return decorator
+
+
+def sandbox_app(function=None, data_flow_kernel=None, cache=False, executors='all', ignore_for_cache=None):
+    """Decorator function for making sandbox apps.
+
+    Parameters
+    ----------
+    function : function
+        Do not pass this keyword argument directly. This is needed in order to allow for omitted parenthesis,
+        for example, ``@sandbox_app`` if using all defaults or ``@sandbox_app(walltime=120)``. If the
+        decorator is used alone, function will be the actual function being decorated, whereas if it
+        is called with arguments, function will be None. Default is None.
+    data_flow_kernel : DataFlowKernel
+        The :class:`~parsl.dataflow.dflow.DataFlowKernel` responsible for managing this app. This can
+        be omitted only after calling :meth:`parsl.dataflow.dflow.DataFlowKernelLoader.load`. Default is None.
+    walltime : int
+        Walltime for app in seconds. Default is 60.
+    executors : string or list
+        Labels of the executors that this app can execute over. Default is 'all'.
+    cache : bool
+        Enable caching of the app call. Default is False.
+    unique_id : string
+    project : string
+    """
+    from parsl.app.sandbox import SandboxApp
+
+    def decorator(func):
+        def wrapper(f):
+            return SandboxApp(f,
                            data_flow_kernel=data_flow_kernel,
                            cache=cache,
                            executors=executors,
